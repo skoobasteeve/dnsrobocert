@@ -9,12 +9,10 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
+          token: ${{ secrets.ACTIONS_TOKEN }}
           fetch-depth: 0
-
-      - uses: actions/checkout@v2
       - name: Merge upstream
         run: |
           git remote add upstream https://github.com/adferrand/dnsrobocert
