@@ -19,8 +19,8 @@ jobs:
         run: |
           git remote add upstream https://github.com/adferrand/dnsrobocert
           git fetch upstream
-          git checkout -b upstream-merge
-          git merge --no-edit upstream/master
+          git branch upstream-merge upstream/master
+          # git merge --no-edit upstream/master
           git push origin upstream-merge
 
           # etc
