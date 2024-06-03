@@ -1,21 +1,27 @@
 ---
-  name: Sync Fork
+  name: Merge upstream branches
   on:
+    workflow_dispatch:
     # schedule:
-    #   - cron: '*/30 * * * *' # every 30 minutes
-    workflow_dispatch: # on button click
+    #    # actually, ~5 minutes is the highest
+    #    # effective frequency you will get
+    #   - cron:  '* * * * *'
   jobs:
-    sync:
+    merge:
       runs-on: ubuntu-latest
       steps:
-        - uses: tgymnich/fork-sync@v2.0.9
+        - uses: actions/checkout@v3
           with:
-            owner: adferrand
-            repo: dnsrobocert
-            pr_title: Fork Sync
-            pr_message: Look at me I'm a fork!
-            auto_approve: false
-            auto_merge: false
-            token: ${{ secrets.GITHUB_TOKEN }}
-            base: master
-            head: master
+            token: ${{ secrets.ACTIONS_TOKEN }}
+            fetch-depth: 0
+        - name: Merge upstream
+          run: |
+            git remote add upstream https://github.com/adferrand/dnsrobocert
+            git fetch upstream
+            git branch upstream-merge upstream/master
+            # git merge --no-edit upstream/master
+            git push origin upstream-merge
+        - name: Create Pull Request
+          uses: peter-evans/create-pull-request@v6
+          with:
+            branch: upstream-merge
