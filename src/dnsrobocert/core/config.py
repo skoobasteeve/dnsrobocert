@@ -1,12 +1,13 @@
 import logging
 import os
 import re
+import warnings
 from typing import Any, Dict, Optional, Set
 
 import coloredlogs
 import jsonschema
-import pkg_resources
 import yaml
+from importlib_resources import as_file, files
 
 from dnsrobocert.core import utils
 
@@ -34,9 +35,9 @@ Configuration file is not a valid YAML file.\
         LOGGER.error(message)
         return None
 
-    schema_path = pkg_resources.resource_filename("dnsrobocert", "schema.yml")
-    with open(schema_path) as file_h:
-        schema = yaml.load(file_h.read(), yaml.SafeLoader)
+    with as_file(files("dnsrobocert") / "schema.yml") as schema_path:
+        with open(schema_path) as file_h:
+            schema = yaml.load(file_h.read(), yaml.SafeLoader)
 
     if not config:
         message = """
@@ -129,12 +130,12 @@ def find_profile_for_lineage(config: Dict[str, Any], lineage: str) -> Dict[str, 
     certificate = get_certificate(config, lineage)
     if not certificate:
         raise RuntimeError(
-            f"Error, certificate named `{lineage}` could not be found in configuration."
+            f"Error, certificate named {lineage} could not be found in configuration."
         )
     profile_name = certificate.get("profile")
     if not profile_name:
         raise RuntimeError(
-            f"Error, profile named `{lineage}` could not be found in configuration."
+            f"Error, profile named {lineage} could not be found in configuration."
         )
 
     return get_profile(config, profile_name)
@@ -169,26 +170,35 @@ def _values_conversion(config: Dict[str, Any]):
 
 
 def _business_check(config: Dict[str, Any]):
-    profiles = [profile["name"] for profile in config.get("profiles", [])]
+    profile_names = [profile["name"] for profile in config.get("profiles", [])]
     lineages: Set[str] = set()
     for certificate_config in config.get("certificates", []):
         # Check that every certificate is associated to an existing profile
-        profile = certificate_config.get("profile")
+        profile_name = certificate_config.get("profile")
         lineage = get_lineage(certificate_config)
         if lineage:
-            if profile not in profiles:
+            if profile_name not in profile_names:
                 raise ValueError(
-                    f"Profile `{profile}` used by certificate `{lineage}` does not exist."
+                    f"Profile {profile_name} used by certificate {lineage} does not exist."
                 )
 
             if lineage in lineages:
-                raise ValueError(f"Certificate with name `{lineage}` is duplicated.")
+                raise ValueError(f"Certificate with name {lineage} is duplicated.")
             lineages.add(lineage)
+
+    # Emit warning for deprecated delegated_subdomain field in profile section
+    profiles = config.get("profiles", [])
+    if [profile for profile in profiles if profile.get("delegated_subdomain")]:
+        warnings.warn(
+            "Property delegated_subdomain from profile section is not used anymore and is deprecated. "
+            "Please remove it as it will become invalid in a future section",
+            DeprecationWarning,
+        )
 
     # Check that each files_mode and dirs_mode is a valid POSIX mode
     files_mode = config.get("acme", {}).get("certs_permissions", {}).get("files_mode")
     if files_mode and files_mode > 511:
-        raise ValueError("Invalid files_mode `{0}` provided.".format(oct(files_mode)))
+        raise ValueError("Invalid files_mode {0} provided.".format(oct(files_mode)))
     dirs_mode = config.get("acme", {}).get("certs_permissions", {}).get("dirs_mode")
     if dirs_mode and dirs_mode > 511:
-        raise ValueError("Invalid dirs_mode `{0}` provided.".format(oct(files_mode)))
+        raise ValueError("Invalid dirs_mode {0} provided.".format(oct(files_mode)))

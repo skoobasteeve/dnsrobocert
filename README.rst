@@ -12,7 +12,7 @@
     :target: https://pypi.org/project/dnsrobocert/
 .. |docker| image:: https://img.shields.io/docker/pulls/adferrand/dnsrobocert
     :target: https://hub.docker.com/r/adferrand/dnsrobocert
-.. |ci| image:: https://img.shields.io/github/workflow/status/adferrand/dnsrobocert/main/master
+.. |ci| image:: https://img.shields.io/github/actions/workflow/status/adferrand/dnsrobocert/main.yml?branch=master
     :target: https://github.com/adferrand/dnsrobocert/actions/workflows/main.yml
 .. |coverage| image:: https://img.shields.io/codecov/c/github/adferrand/dnsrobocert/master
     :target: https://app.codecov.io/gh/adferrand/dnsrobocert/branch/master
@@ -97,7 +97,7 @@ For a quick start, please have a look in particular at the `User guide`_ and the
 Support
 =======
 
-Do not hesitate to join the `DNSroboCert community on Spectrum`_ if you need help to use or develop DNSroboCert!
+Do not hesitate to join the `DNSroboCert community on Github Discussions`_ if you need help to use or develop DNSroboCert!
 
 Contributing
 ============
@@ -109,4 +109,4 @@ Please have a look at the `Developer guide`_ page to know how to start.
 .. _User guide: https://dnsrobocert.readthedocs.io/en/latest/user_guide.html
 .. _Lexicon provider configuration: https://dnsrobocert.readthedocs.io/en/latest/providers_options.html
 .. _Developer guide: https://dnsrobocert.readthedocs.io/en/latest/developer_guide.html
-.. _DNSroboCert community on Spectrum: https://spectrum.chat/dnsrobocert
+.. _DNSroboCert community on Github Discussions: https://github.com/adferrand/dnsrobocert/discussions

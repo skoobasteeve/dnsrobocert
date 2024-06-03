@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 import traceback
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import OpenSSL
 import pem
@@ -15,7 +15,7 @@ from dnsrobocert.core import config, utils
 from dnsrobocert.core.challenge import check_one_challenge, txt_challenge
 
 
-def main(args: List[str] = None) -> int:
+def main(args: Optional[List[str]] = None) -> int:
     if not args:
         args = sys.argv[1:]
 
@@ -31,7 +31,7 @@ def main(args: List[str] = None) -> int:
 
     if not dnsrobocert_config:
         print(
-            f"Error occured while loading the configuration file, aborting the `{parsed_args.type}` hook.",
+            f"Error occured while loading the configuration file, aborting the {parsed_args.type} hook.",
             file=sys.stderr,
         )
         return 1
@@ -40,7 +40,7 @@ def main(args: List[str] = None) -> int:
         globals()[parsed_args.type](dnsrobocert_config, parsed_args.lineage)
     except BaseException as e:
         print(
-            f"Error while executing the `{parsed_args.type}` hook:",
+            f"Error while executing the {parsed_args.type} hook:",
             file=sys.stderr,
         )
         print(e, file=sys.stderr)

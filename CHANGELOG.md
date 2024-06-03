@@ -2,6 +2,44 @@
 
 ## master - CURRENT
 
+## 3.25.0 - 16/11/2023
+### Added
+* DNSroboCert now leverages the new DNS zone name resolution introduced by Lexicon 3.17.0.
+  As a consequence, the `delegated_subdomain` field of the `profile` section is not used
+  anymore, and will be removed in a future version.
+### Modified
+* Upgrade to Lexicon 3.17.0
+* Upgrade to Certbot 2.7.4
+* Official support for Python 3.12
+* Resolve CNAMEs using dedicated method provided by `dnspython`
+
+## 3.24.2 - 18/09/2023
+### Modified
+* Fix TXT record cleanup actions
+
+## 3.24.1 - 13/08/2023
+### Modified
+* Fix compatibility issue with Python 3.8
+
+## 3.24.0 - 13/08/2023
+### Modified
+* Upgrade to Lexicon 3.14.0 (new provider: `wedos`, new functions to call Lexicon client)
+
+### Removed
+* Drop Python 3.7 support
+
+## 3.23.1 - 19/06/2023
+### Modified
+* Fix docker armv7l build
+
+## 3.23.0 - 19/06/2023
+### Modified
+* Upgrade to Certbot 2.6.0
+* Upgrade to Lexicon 3.12.0 (new providers: `duckdns`, `dnsservices`, `flexibleengine`)
+* Official support for Python 3.11
+* Fix community URL (#871)
+* Fix various issues regarding dynamic configuration by calling `certbot certonly` for all certbot actions (#970)
+
 ## 3.22.1 - 12/10/2022
 ### Modified
 * Upgrade to Lexicon 3.11.6 (fix `hetzner` provider)
