@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: tgymnich/fork-sync@v2.0.9
         with:
-          owner: skoobasteeve
-          repo: adferrand/dnsrobocert
+          owner: adferrand
+          repo: dnsrobocert
           pr_title: Fork Sync
           pr_message: Look at me I'm a fork!
           auto_approve: false
