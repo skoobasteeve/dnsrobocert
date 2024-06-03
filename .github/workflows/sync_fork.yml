@@ -20,7 +20,7 @@
             git fetch upstream
             git branch upstream-merge upstream/master
             # git merge --no-edit upstream/master
-            git push origin upstream-merge
+            git push -f origin upstream-merge
         - name: Create Pull Request
           uses: peter-evans/create-pull-request@v6
           with:
