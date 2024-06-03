@@ -17,5 +17,6 @@ jobs:
           pr_title: Fork Sync
           pr_message: Look at me I'm a fork!
           auto_approve: false
+          token: ${{ secrets.GITHUB_TOKEN }}
           base: master
           head: master
