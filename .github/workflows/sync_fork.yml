@@ -37,5 +37,5 @@
             token: ${{ secrets.ACTIONS_TOKEN }}
             branch: upstream-sync
             title: Sync with upstream
-            team-reviewers: DevOps
+            # team-reviewers: DevOps
       
