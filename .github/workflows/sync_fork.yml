@@ -36,5 +36,5 @@
             token: ${{ env.ORG_TOKEN }}
             branch: upstream-sync
             title: Sync with upstream
-            reviewers: skoobasteeve
+            # reviewers: skoobasteeve
       
