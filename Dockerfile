@@ -9,6 +9,7 @@ RUN apt-get update -y \
        gcc \
        python3-dev \
        libffi-dev \
+       tmux \
  && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - \
  && rm -rf /var/lib/apt/lists/*
 
