@@ -8,7 +8,7 @@
   
   env:
     UPSTREAM_REPO: adferrand/dnsrobocert
-    ORG_TOKEN: ${{ secrets.ORG_TOKEN }}
+    ORG_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
     GIT_EMAIL: systems@ycharts.com
     GIT_NAME: ychartsdeployer
     GITHUB_TEAM: DevOps
@@ -22,7 +22,7 @@
           with:
             token: ${{ secrets.ACTIONS_TOKEN }}
 
-        - name: Merge upstream
+        - name: Fetch upstream changes - master
           run: |
             git config --global user.email ${{ env.GIT_EMAIL }}
             git config --global user.name ${{ env.GIT_NAME }}
@@ -30,11 +30,23 @@
             git fetch upstream master:upstream-master
             git reset --hard upstream-master
 
-        - name: Create Pull Request
+        - name: Create Pull Request - master
           uses: peter-evans/create-pull-request@v6
           with:
-            token: ${{ secrets.ACTIONS_TOKEN }}
+            token: ${{ env.ORG_TOKEN }}
             branch: upstream-sync
+            base: master
             title: Sync with upstream
-            # team-reviewers: DevOps
-      
+
+        - name: Fetch upstream changes - legacy
+          run: |
+            git fetch upstream legacy:upstream-legacy
+            git reset --hard upstream-legacy
+
+        - name: Create Pull Request - legacy
+          uses: peter-evans/create-pull-request@v6
+          with:
+            token: ${{ env.ORG_TOKEN }}
+            branch: upstream-sync-legacy
+            base: legacy
+            title: Sync with upstream
